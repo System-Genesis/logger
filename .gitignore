@@ -7,6 +7,8 @@ dist/
 # jest coverage static server
 coverage/
 
+/logs
+
 # Dot Env Configuration
 .env
 
