@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:7
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - 'elasticsearch_data:/bitnami/elasticsearch/data'
+
+  kibana:
+    image: docker.io/bitnami/kibana:7
+    ports:
+      - '5601:5601'
+    volumes:
+      - 'kibana_data:/bitnami/kibana'
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.io/bitnami/logstash:7
+    ports:
+      - 8080:8080
+    environment:
+      - LOGSTASH_CONF_FILENAME=logstash.conf
+    volumes:
+      - logstash_data:/bitnami/
+      - logger_data:/logger/logs
+      - ./logstash:/bitnami/logstash/config
+    depends_on:
+      - elasticsearch
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  logger:
+    build: .
+    volumes:
+      - 'logger_data:/usr/src/app/logs'
+    environment:
+      RABBIT_URI: amqp://rabbit
+
+volumes:
+  elasticsearch_data:
+    driver: local
+  kibana_data:
+    driver: local
+  logstash_data:
+    driver: local
+  logger_data:
+    driver: local
