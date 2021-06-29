@@ -43,7 +43,7 @@ const createMyLogger = (type) => {
 };
 
 const preProccessLog = (log: iLog) => {
-    if (!log.level || !log.message || !log.system || !log.service) {
+    if (!log.level || !log.title || !log.system || !log.service || !log.scope) {
         console.log('broken log format detected, marking as broken format');
         log.extraFields.broken = true;
     }
@@ -52,8 +52,8 @@ const preProccessLog = (log: iLog) => {
 
 const insertLog = (log: iLog) => {
     const level = logger.levels.includes(log.level) ? log.level : 'info';
-    const { message, system, service } = log;
-    loggers[level].log({ level, message, system, service, ...log.extraFields });
+    const { title, system, service, scope } = log;
+    loggers[level].log({ level, title, system, service, scope, ...log.extraFields });
 };
 
 export { preProccessLog, initLogger, insertLog };

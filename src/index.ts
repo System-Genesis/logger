@@ -23,10 +23,10 @@ const initializeRabbit = async () => {
     // await menash.declareQueue('logger', { durable: true });
 
     await menash.declareTopology({
-        queues: [{ name: 'logger', options: { durable: true } }],
+        queues: [{ name: 'LOG_QUEUE', options: { durable: true } }],
         // exchanges: [{ name: 'feature-exchange', type: 'fanout', options: { durable: true } }],
         // bindings: [{ source: 'feature-exchange', destination: 'feature-queue' }],
-        consumers: [{ queueName: 'logger', onMessage: logConsume }],
+        consumers: [{ queueName: 'LOG_QUEUE', onMessage: logConsume }],
     });
 
     console.log('Rabbit initialized');

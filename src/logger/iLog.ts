@@ -1,6 +1,7 @@
 export default interface iLog {
     level: string;
-    message: string;
+    title: string;
+    scope: string;
     system: string;
     service: string;
     broken?: boolean;
